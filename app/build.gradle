@@ -39,5 +39,7 @@ dependencies {
     implementation 'com.facebook.network.connectionclass:connectionclass:1.0.1'
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
 
+    implementation "org.jetbrains.anko:anko-commons:0.10.4"
+
     implementation "com.google.android.gms:play-services-vision:17.0.2"
 }

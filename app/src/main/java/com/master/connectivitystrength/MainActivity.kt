@@ -1,5 +1,7 @@
 package com.master.connectivitystrength
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
@@ -12,6 +14,8 @@ import com.facebook.network.connectionclass.DeviceBandwidthSampler
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import okio.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -69,6 +73,13 @@ class MainActivity : AppCompatActivity() {
                 .load("https://i.pinimg.com/originals/d6/4c/7d/d64c7dc5f8cebba583f50cd2dec43d2c.jpg")
                 .apply(RequestOptions().transform(FaceCenterCrop()))
                 .into(image)
+
+        image.setOnClickListener {
+            val bitmap = (image.drawable as BitmapDrawable).bitmap
+            bitmap.saveToFile(File(Environment.getExternalStorageDirectory(), "file2.png")) { success: Boolean, e: Exception? ->
+                Log.i("TAG", "$it")
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -150,5 +161,21 @@ class MainActivity : AppCompatActivity() {
                 callback(true, null)
             }
         })
+    }
+
+    fun Bitmap.saveToFile(file: File, callback: (success: Boolean, e: Exception?) -> Unit) {
+        doAsync {
+            try {
+                FileOutputStream(file.path).use { out ->
+                    this@saveToFile.compress(Bitmap.CompressFormat.PNG, 100, out)
+                    uiThread {
+                        callback(true, null)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                callback(false, e)
+            }
+        }
     }
 }
