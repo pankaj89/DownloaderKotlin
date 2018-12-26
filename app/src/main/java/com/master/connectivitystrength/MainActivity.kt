@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.facebook.network.connectionclass.ConnectionClassManager
 import com.facebook.network.connectionclass.ConnectionQuality
 import com.facebook.network.connectionclass.DeviceBandwidthSampler
+import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import okio.*
 import java.io.File
@@ -59,6 +62,19 @@ class MainActivity : AppCompatActivity() {
                             Log.i("TAG", "$success and ${e.toString()}")
                         }
                 )
+
+        GlideFaceDetector.initialize(this)
+
+        Glide.with(this)
+                .load("https://i.pinimg.com/originals/d6/4c/7d/d64c7dc5f8cebba583f50cd2dec43d2c.jpg")
+                .apply(RequestOptions().transform(FaceCenterCrop()))
+                .into(image)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        GlideFaceDetector.releaseDetector()
+
     }
 
     private class ProgressResponseBody internal constructor(private val responseBody: ResponseBody, private val progressListener: (read: Long, totalLength: Long, isDone: Boolean) -> Unit) : ResponseBody() {

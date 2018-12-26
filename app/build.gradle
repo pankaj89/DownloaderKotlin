@@ -31,6 +31,13 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    kapt 'com.github.bumptech.glide:compiler:4.7.1'
+
+//    compile 'com.github.aryarohit07:glide-facedetection-transformation:0.3.0'
     implementation 'com.facebook.network.connectionclass:connectionclass:1.0.1'
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
+
+    implementation "com.google.android.gms:play-services-vision:17.0.2"
 }
